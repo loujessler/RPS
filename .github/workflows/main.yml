@@ -1,6 +1,9 @@
 name: Run Tests
 
-on: [push]
+on:
+  push:
+    branches:
+      - develope
 
 jobs:
   test:
@@ -19,6 +22,5 @@ jobs:
       run: pip install -r requirements.txt
 
     - name: Run Tests
-      run: |
-        export PYTHONPATH=${PYTHONPATH}:${GITHUB_WORKSPACE}/RPS
-        python -m unittest discover tests
+      run: python -m unittest discover tests
+      
