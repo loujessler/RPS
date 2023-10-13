@@ -17,3 +17,10 @@ class TestGenerateKey(TestCase):
         key = Secret.generate_key(64)
         self.assertIsInstance(key, bytes)
         self.assertEqual(len(key), 64)
+
+
+class TestGenerateCompChoice(TestCase):
+    def test_generate_comp_choice(self):
+        choices = ['rock', 'paper', 'scissors']
+        comp_choice = Secret.generate_comp_choice(choices)
+        self.assertIn(comp_choice, choices)
