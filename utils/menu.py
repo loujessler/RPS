@@ -5,62 +5,81 @@ from utils.table import TableGenerator
 
 
 class Menu:
-    def __init__(self, args, menu_title, game_rules):
+    def __init__(self, args: list, menu_title: str, game_rules: object):
         self.args = args
         self.menu_title = menu_title
         self.game_rules = game_rules
+        self._user_choice = None
+        self._menu_items = [f"[{i}] {item}" for i, item in enumerate(args, start=1)]
 
-        self.user_choice = None
-        self.menu_items = [f"[{i}] {item}" for i, item in enumerate(args, start=1)]
+    def _display_help(self):
+        """
+        Show help table.
+        :return:
+        """
+        print(TableGenerator(self.args, self.game_rules).generate_table())
+        self._user_choice = None
 
-    def show_term_menu(self):
+    def _is_valid_choice(self) -> bool:
+        """
+        Checks if the input value exists?
+        :return: Bool
+        """
+        return self._user_choice in [str(i + 1) for i in range(len(self.args))]
+
+    def _display_invalid_message(self, message: str):
+        """
+        Show error message.
+        :param message:
+        :return: None
+        """
+        print(message)
+        self._user_choice = None
+
+    def show_term_menu(self) -> int:
+        """
+        Show and parse choice in term menu.
+        :return: Index of item
+        """
         sys_items = ['', '[?] help', '[0] exit']
-        menu = TerminalMenu(self.menu_items + sys_items,
+        menu_entries = self._menu_items + sys_items
+        menu = TerminalMenu(menu_entries=menu_entries,
                             title=self.menu_title,
                             skip_empty_entries=True,
+                            menu_cursor="→",
                             cycle_cursor=True,
                             clear_screen=True)
-        menu.show()
 
-        while self.user_choice is None:
-            # TODO: 5) пользователь получает "меню" 1 - Камень, 2 - Ножницы, ...., 0 - Exit.
-            # TODO: 6) Пользователь делает свой выбор (при некорректном вводе опять отображается "меню")
-            self.user_choice = menu.chosen_menu_index
-            len_args = len(self.menu_items)
+        while self._user_choice is None:
+            self._user_choice = menu.show()
+            chosen_item = menu.chosen_menu_entry
 
-            if self.user_choice == len_args + 2:
+            if chosen_item == 'exit':
                 sys.exit(0)
-            elif self.user_choice == len_args + 1:
-                display_help = None
-                while display_help is None:
-                    self.user_choice = None
-                    print(TableGenerator(self.args, self.game_rules).generate_table())
-                    display_help = input("Press Enter to continue...")
-                menu.show()
+            elif chosen_item == 'help':
+                self._display_help()
+                input("Press Enter to continue...")
 
-        return self.user_choice
+        return self._user_choice
 
-    def show_classic_menu(self):
+    def show_classic_menu(self) -> int:
+        """
+        Show and parse choice in classic menu.
+        :return: Index of item
+        """
         print(self.menu_title)
-        for i, item in enumerate(self.args, start=1):
-            print(f"{i} - {item}")
+        [print(f"{i} - {item}") for i, item in enumerate(self.args, start=1)]
+        print("\n0 - Exit"
+              "\n? - Help")
 
-        print("\n0 - Exit")
-        print("? - Help")
-
-        while self.user_choice is None:
-            try:
-                self.user_choice = input("Enter your choice: ")
-                if self.user_choice == '0':
-                    sys.exit(0)
-                elif self.user_choice == '?':
-                    print(TableGenerator(self.args, self.game_rules).generate_table())
-                    self.user_choice = None
-                elif self.user_choice in [str(i + 1) for i in range(len(self.args))]:
-                    print('\n')
-                    return int(self.user_choice) - 1
-                else:
-                    print("Invalid choice. Please choose a valid option.")
-            except ValueError:
-                print("Invalid input. Please enter a number.")
-                self.user_choice = None
+        while self._user_choice is None:
+            self._user_choice = input("Enter your choice: ")
+            if self._user_choice == '0':
+                sys.exit(0)
+            elif self._user_choice == '?':
+                self._display_help()
+            elif self._is_valid_choice():
+                print('\n')
+                return int(self._user_choice) - 1
+            else:
+                self._display_invalid_message("Invalid choice. Please choose a valid option.")
