@@ -4,7 +4,6 @@ from utils.rules import Rules
 
 class TestRules(TestCase):
     def setUp(self):
-        # Создаем экземпляр Rules с тестовыми ходами
         self.rules = Rules(["Rock", "Paper", "Scissors", "3rd move", "4th", "5th"])
 
     def test_draw(self):
