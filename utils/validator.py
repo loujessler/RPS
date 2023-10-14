@@ -12,6 +12,12 @@ class Validator:
         self._validate_cmenu()
         return self._validate_uniqueness() and self._is_valid_argument_count() and self._is_odd_argument()
 
+    def is_empty(self):
+        if len(self.args) <= 0:
+            self.error_message = "Enter an odd number >=3 non-repeating arguments."
+            return True
+        return False
+
     def _validate_cmenu(self):
         if self.args[-1] == '-cmenu':
             self.classic_menu = True
