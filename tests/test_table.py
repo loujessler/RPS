@@ -8,13 +8,13 @@ from utils.table import TableGenerator
 class TestTableGenerator(TestCase):
     def setUp(self):
         self.moves = ['Rock', 'Paper', '3rd move', '4th', '5th', '6th', '7th']
-        self.expected_table_data = [['Draw', 'Win', 'Win', 'Win', 'Lose', 'Lose', 'Lose'],
-                                    ['Lose', 'Draw', 'Win', 'Win', 'Win', 'Lose', 'Lose'],
-                                    ['Lose', 'Lose', 'Draw', 'Win', 'Win', 'Win', 'Lose'],
-                                    ['Lose', 'Lose', 'Lose', 'Draw', 'Win', 'Win', 'Win'],
-                                    ['Win', 'Lose', 'Lose', 'Lose', 'Draw', 'Win', 'Win'],
-                                    ['Win', 'Win', 'Lose', 'Lose', 'Lose', 'Draw', 'Win'],
-                                    ['Win', 'Win', 'Win', 'Lose', 'Lose', 'Lose', 'Draw']]
+        self.expected_table_data = [['Rock', 'Draw', 'Win', 'Win', 'Win', 'Lose', 'Lose', 'Lose'],
+                                    ['Paper', 'Lose', 'Draw', 'Win', 'Win', 'Win', 'Lose', 'Lose'],
+                                    ['3rd move', 'Lose', 'Lose', 'Draw', 'Win', 'Win', 'Win', 'Lose'],
+                                    ['4th', 'Lose', 'Lose', 'Lose', 'Draw', 'Win', 'Win', 'Win'],
+                                    ['5th', 'Win', 'Lose', 'Lose', 'Lose', 'Draw', 'Win', 'Win'],
+                                    ['6th', 'Win', 'Win', 'Lose', 'Lose', 'Lose', 'Draw', 'Win'],
+                                    ['7th', 'Win', 'Win', 'Win', 'Lose', 'Lose', 'Lose', 'Draw']]
         self.game_rules = Rules(self.moves)
         self.table_generator = TableGenerator(self.moves, self.game_rules)
 

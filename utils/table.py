@@ -9,16 +9,21 @@ class TableGenerator:
     def draw_matrix(self):
         """
         Function draw matrix with data of determine winner.
-
         :return:
         """
-        table_data = [[self.game_rules.determine_winner(move1, move2) for move2 in self.moves] for move1 in self.moves]
+        table_data = []
+        for move1 in self.moves:
+            row = [move1]
+            for move2 in self.moves:
+                result = self.game_rules.determine_winner(move1, move2)
+                row.append(result)
+
+            table_data.append(row)
         return table_data
 
     def generate_table(self):
         """
         Function generate help table.
-
         :return:
         """
         header = ["v PC\\User >"]
