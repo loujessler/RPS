@@ -9,7 +9,7 @@ from utils.validator import Validator
 
 def main():
     validator = Validator(sys.argv[1:])
-    if not validator.is_valid():
+    if validator.is_empty() or not validator.is_valid():
         print(f"Error: {validator.error_message}")
         sys.exit(1)
 
@@ -33,7 +33,7 @@ def game(validator):
 
     print(f"Your move: {user_choice}\n"
           f"Computer move: {computer_choice}\n\n"
-          f"{7*'*'} {game_rules.determine_winner(user_choice, computer_choice).upper()}! {7*'*'}\n\n"
+          f"{7 * '*'} {game_rules.determine_winner(user_choice, computer_choice).upper()}! {7 * '*'}\n\n"
           f"HMAC: {hmac}\n"
           f"HMAC Key: {key.hex()}")
 
